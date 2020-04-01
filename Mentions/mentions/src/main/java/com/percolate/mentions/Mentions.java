@@ -113,6 +113,16 @@ public class Mentions {
         }
 
         /**
+         * Set a color for the mentions' text. The default color is white.
+         *
+         * @param color     int     The color for the {@link Mentionable}'s text.
+         */
+        public Builder highlightTextColor(final int color) {
+            mentionsLib.mentionInsertionLogic.setTextColor(color);
+            return this;
+        }
+
+        /**
          * Set the maximum number of characters the user may have typed until the search text
          * is invalid.
          *

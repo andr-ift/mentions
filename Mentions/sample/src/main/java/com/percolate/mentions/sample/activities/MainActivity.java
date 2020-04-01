@@ -1,5 +1,6 @@
 package com.percolate.mentions.sample.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements QueryListener, Su
         mentions = new Mentions.Builder(this, commentField)
                 .suggestionsListener(this)
                 .queryListener(this)
+                .highlightColor(Color.BLACK)
+                .highlightTextColor(Color.WHITE)
                 .build();
         mentionsLoaderUtils = new MentionsLoaderUtils(this);
     }

@@ -26,6 +26,7 @@ class MentionsTest {
         val mentions = Mentions.Builder(RuntimeEnvironment.application, editText)
                 .maxCharacters(10)
                 .highlightColor(android.R.color.darker_gray)
+                .highlightTextColor(android.R.color.white)
                 .queryListener(queryListener)
                 .suggestionsListener(suggestionsListener).build()
 

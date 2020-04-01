@@ -1,5 +1,6 @@
 package com.percolate.mentions;
 
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.Spannable;
@@ -15,7 +16,7 @@ import java.util.List;
  * Insert and highlights a {@link Mentionable} in the {@link EditText}. All {@link Mentionable}s
  * are appended to the <code>mentions</code> array. The {@link Mentionable}'s offset and length
  * values are updated as text is edited in the {@link EditText}. The default text highlight color
- * is orange and it is configurable.
+ * is black and it is configurable.
  */
 class MentionInsertionLogic {
 
@@ -30,15 +31,17 @@ class MentionInsertionLogic {
     private final List<Mentionable> mentions;
 
     /**
-     * Text color of the mention in the {@link EditText}. The default color is orange.
+     * Text color of the mention in the {@link EditText}. The default color is black.
      */
     @SuppressWarnings("WeakerAccess")
     protected int textHighlightColor;
+    protected int textColor;
 
     MentionInsertionLogic(final EditText editText) {
         this.editText = editText;
         this.mentions = new ArrayList<>();
-        this.textHighlightColor = R.color.mentions_default_color;
+        this.textHighlightColor = Color.BLACK;
+        this.textColor = Color.WHITE;
     }
 
     /**
@@ -70,10 +73,19 @@ class MentionInsertionLogic {
     /**
      * Set text highlight of the {@link Mentionable}'s name.
      *
-     * @param textHighlightColor The text color of the mention.
+     * @param textHighlightColor The color of the mention's background.
      */
     void setTextHighlightColor(final int textHighlightColor) {
         this.textHighlightColor = textHighlightColor;
+    }
+
+    /**
+     * Set text color of the {@link Mentionable}'s name.
+     *
+     * @param textColor The color of the mention text.
+     */
+    void setTextColor(final int textColor) {
+        this.textColor = textColor;
     }
 
     /**
@@ -196,9 +208,9 @@ class MentionInsertionLogic {
     private void highlightMentionsText() {
         // Clear current highlighting (note: just using clearSpans(); makes EditText fields act
         // strange).
-        final ForegroundColorSpan[] spans = editText.getEditableText().getSpans(0,
-                editText.getText().length(), ForegroundColorSpan.class);
-        for (ForegroundColorSpan span : spans) {
+        final RadiusBackgroundSpan[] spans = editText.getEditableText().getSpans(0,
+                editText.getText().length(), RadiusBackgroundSpan.class);
+        for (RadiusBackgroundSpan span : spans) {
             editText.getEditableText().removeSpan(span);
         }
 
@@ -211,8 +223,7 @@ class MentionInsertionLogic {
                     final int end = start + mention.getMentionLength();
                     if (editText.length() >= end && StringUtils.equals(editText.getText()
                             .subSequence(start, end), mention.getMentionName())) {
-                        ForegroundColorSpan highlightSpan = new ForegroundColorSpan(
-                                ContextCompat.getColor(editText.getContext(), textHighlightColor));
+                        RadiusBackgroundSpan highlightSpan = new RadiusBackgroundSpan(textHighlightColor, textColor);
                         editText.getEditableText().setSpan(highlightSpan, start, end,
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     } else {
